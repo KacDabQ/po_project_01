@@ -1,5 +1,6 @@
-# GET http://127.0.0.1:5000/users
+GET http://127.0.0.1:5000/users
 
+###
 
 POST http://127.0.0.1:5000/users HTTP/1.1
 content-type: application/json
@@ -9,3 +10,7 @@ content-type: application/json
     "lastname": "Dabrowski"
 }
 
+###
+
+DELETE http://127.0.0.1:5000/users/2 HTTP/1.1
+content-type: application/json

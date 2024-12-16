@@ -61,6 +61,18 @@ def create_app(test_config=None):
         created_user = {"id": current_maximum_id + 1, "name": name, "lastname": lastname}
         db.users.append(created_user)
         return jsonify(created_user), 201
+    
+    @app.route("/users/<int:id>", methods=['DELETE'])
+    def delete_user(id):
+        from . import db
+        index = 0
+        for u in db.users:
+            if id == u['id']:
+                break
+            else:
+                index += 1
+        db.users.pop(index)
+        return str(index)
 
 
     return app
