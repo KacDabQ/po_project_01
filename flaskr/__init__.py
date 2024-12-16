@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 
 def create_app(test_config=None):
@@ -48,6 +48,19 @@ def create_app(test_config=None):
             return jsonify({"error": "Multiple users found"}), 500
         else:
             return jsonify(users_found[0]), 200
+    
+    @app.route("/users", methods=['POST'])
+    def create_user():
+        from . import db
+        name = request.json.get('name')
+        lastname = request.json.get('lastname')
+        current_maximum_id = 0
+        for u in db.users:
+            if current_maximum_id < u['id']:
+                current_maximum_id = u['id']
+        created_user = {"id": current_maximum_id + 1, "name": name, "lastname": lastname}
+        db.users.append(created_user)
+        return jsonify(created_user), 201
 
 
     return app
