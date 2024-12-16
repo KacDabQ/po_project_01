@@ -9,7 +9,6 @@ def get_all_users():
 
 @bp.route("/<int:id>")
 def get_user(id):
-    from . import db
     users_found = _get_users_by_id(id)
 
     if (len(users_found) == 0):
@@ -21,13 +20,30 @@ def get_user(id):
 
 @bp.route("/", methods=['POST'])
 def create_user():
+    if 'name' not in request.json or 'lastname' not in request.json:
+        return jsonify({"error": "Missing 'name' or 'lastname' fields"}), 400
+
     created_user = _create_user_from_request(None, request)
     return jsonify(created_user), 201
+
+@bp.route("/<int:id>", methods=['PATCH'])
+def update_user(id):
+    if 'name' not in request.json and 'lastname' not in request.json:
+        return jsonify({"error": "Missing 'name' and 'lastname' fields"}), 400
+
+    users_found = _get_users_by_id(id)
+    if (len(users_found) == 0):
+        return jsonify({"error": "User not found"}), 404
+    elif (len(users_found) > 1):
+        return jsonify({"error": "Multiple users found"}), 500
+    else:
+        _update_user_from_request(users_found[0], request)
+    return "", 204
 
 @bp.route("/<int:id>", methods=['PUT'])
 def create_or_update_user(id):
     if 'name' not in request.json or 'lastname' not in request.json:
-        return jsonify({"error": "Missing 'name' and 'lastname' fields"}), 400
+        return jsonify({"error": "Missing 'name' or 'lastname' fields"}), 400
 
     users_found = _get_users_by_id(id)
     if (len(users_found) == 0):

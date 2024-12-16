@@ -6,6 +6,19 @@ GET http://127.0.0.1:5000/users
 
 GET http://127.0.0.1:5000/users/1
 
+### Get one non existing return 404
+
+GET http://127.0.0.1:5000/users/1000
+
+### Create new user with missing first name returns 400
+
+POST http://127.0.0.1:5000/users HTTP/1.1
+content-type: application/json
+
+{
+    "lastname": "Dabrowski"
+}
+
 ### Create new user
 
 POST http://127.0.0.1:5000/users HTTP/1.1
@@ -14,6 +27,35 @@ content-type: application/json
 {
     "name": "Kacper",
     "lastname": "Dabrowski"
+}
+
+### Patch not existing user returns 404
+
+PATCH http://127.0.0.1:5000/users/12346 HTTP/1.1
+content-type: application/json
+
+{
+    "lastname": "Mickiewicz",
+    "name": "Adam Wieszcz"
+}
+
+### Patch existing user with all props
+
+PATCH http://127.0.0.1:5000/users/2 HTTP/1.1
+content-type: application/json
+
+{
+    "lastname": "Slowacki",
+    "name": "Juliusz"
+}
+
+### Patch existing user with one props
+
+PATCH http://127.0.0.1:5000/users/2 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Ferdynand"
 }
 
 ### Put not existing user ... sets id
