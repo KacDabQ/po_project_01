@@ -1,6 +1,12 @@
+### Get all
+
 GET http://127.0.0.1:5000/users
 
-###
+### Get one
+
+GET http://127.0.0.1:5000/users/1
+
+### Create new user
 
 POST http://127.0.0.1:5000/users HTTP/1.1
 content-type: application/json
@@ -10,7 +16,41 @@ content-type: application/json
     "lastname": "Dabrowski"
 }
 
-###
+### Put not existing user ... sets id
+
+PUT http://127.0.0.1:5000/users/100 HTTP/1.1
+content-type: application/json
+
+{
+    "lastname": "Mickiewicz",
+    "name": "Adam Wieszcz"
+}
+
+### Put existing user with all data
+
+PUT http://127.0.0.1:5000/users/2 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Adam Updated",
+    "lastname": "Slowacki"
+}
+
+### Put existing user but not full data
+
+PUT http://127.0.0.1:5000/users/2 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Adam Updated"
+}
+
+### Delete user
 
 DELETE http://127.0.0.1:5000/users/2 HTTP/1.1
+content-type: application/json
+
+### Delete not found user
+
+DELETE http://127.0.0.1:5000/users/200 HTTP/1.1
 content-type: application/json
