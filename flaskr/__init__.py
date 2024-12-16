@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, jsonify
 
 
 def create_app(test_config=None):
@@ -27,6 +27,27 @@ def create_app(test_config=None):
     # a simple page that says hello
     @app.route('/hello')
     def hello():
-        return 'Hello, World!'
+        return 'Hello, World! My name is Anton.'
+    
+    @app.route('/users', methods=['GET'])
+    def get_all_users():
+        from . import db
+        return jsonify(db.users), 200
+    
+    @app.route("/users/<id>")
+    def get_user(id):
+        from . import db
+        users_found = []
+        for u in db.users:
+            if str(u["id"]) == id:
+                users_found.append(u)
+
+        if (len(users_found) == 0):
+            return jsonify({"error": "User not found"}), 404
+        elif (len(users_found) > 1):
+            return jsonify({"error": "Multiple users found"}), 500
+        else:
+            return jsonify(users_found[0]), 200
+
 
     return app
